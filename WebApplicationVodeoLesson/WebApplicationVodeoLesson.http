@@ -1,0 +1,6 @@
+@WebApplicationVodeoLesson_HostAddress = http://localhost:5197
+
+GET {{WebApplicationVodeoLesson_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
