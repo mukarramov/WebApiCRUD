@@ -1,51 +1,39 @@
-﻿using System.Data.SqlClient;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplicationVodeoLesson.Models;
 using System.Data;
-using MySql.Data.MySqlClient;
-using System.Collections.Generic;
+using System.Text.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
+
 namespace WebApplicationVideoLesson.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class ProductController : ControllerBase
     {
-        public List<Product> products = new List<Product>()
-        {
-         new Product
-         {
-             Id = 1,
-            Name = "jacket",
-            Price = 210
-         },
-         new Product
-         {
-              Id = 2,
-            Name = "belt",
-            Price = 150
-         }
-        };
+        //create a new product and add to list
+        private static List<Product> products = new List<Product>();
+        //{
+        // new Product
+        // {
+        //     Id = 1,
+        //    Name = "jacket",
+        //    Price = 210
+        // },
+        // new Product
+        // {
+        //      Id = 2,
+        //    Name = "belt",
+        //    Price = 150
+        // }
+        //};
 
-        [HttpPost]
-        public IActionResult CreateProduct(ProductDto productsdto)
+        [HttpPost] //create a new product and add to list
+        public IActionResult CreateProduct(Product productsdto)
         {
             try
             {
-                // List<Product> products = new List<Product>();
-                products.Add(new Product
-                {
-                    Id = productsdto.Id,
-                    Name = productsdto.Name,
-                    Price = productsdto.Price
-                });
-                new Product
-                {
-                    Id = productsdto.Id,
-                    Name = productsdto.Name,
-                    Price = productsdto.Price
-                };
-                //List<Product> products = new List<Product>();
+                products.Add(productsdto);
                 //products.Add(new Product
                 //{
                 //    Id = productsdto.Id,
@@ -60,24 +48,24 @@ namespace WebApplicationVideoLesson.Controllers
             return Ok(products);
         }
 
-        [HttpGet]
+        [HttpGet] //show all items in list
         public IActionResult EditProduct()
         {
             return Ok(products);
         }
 
-        [HttpDelete]
+        [HttpDelete] //detete items in list
         public IActionResult DeleteProduct(int id)
         {
             products.RemoveAll(x => x.Id == id);
             return Ok(products);
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")] //update items in list
         public IActionResult UpdateProduct(int id, ProductDto product)
         {
             //object addOrUpdateValue = products.AddOrUpdate(x => x.Id, product);
-            var IdProducts=products.Where(x => x.Id==id).ToList();
+            var IdProducts = products.Where(x => x.Id == id).ToList();
 
             if (IdProducts.Any())
             {
